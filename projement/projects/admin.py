@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from projects.models import Company, Project
+from projects.models import Company, Project, ProjectHistory
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -21,5 +21,11 @@ class ProjectAdmin(admin.ModelAdmin):
         return 'company',
 
 
+class ProjectHistoryAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'project', 'user', 'modification_date')
+    list_filter = ('project', 'user', 'modification_date',)
+
+
 admin.site.register(Company)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(ProjectHistory, ProjectHistoryAdmin)

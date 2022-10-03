@@ -103,7 +103,7 @@ developers wanted to increase it by 10 and the resulting value should have been 
 **Please change the logic so that instead of entering the total amount of actual hours, the designers, developers and
 testers have to enter the hours incrementally.**
 
-### 5. Design and implement the history of the changes
+### 5. Design and implement the history of the changes | ☑
 
 Currently all the users can edit the actual hours of a project and no history
 of the changes is left behind.

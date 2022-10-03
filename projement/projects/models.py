@@ -1,5 +1,6 @@
 from abc import ABCMeta
 
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
@@ -60,6 +61,16 @@ class Project(models.Model):
     @property
     def is_over_budget(self):
         return self.total_actual_hours > self.total_estimated_hours
+
+
+class ProjectHistory(models.Model):
+    class Meta:
+        verbose_name = 'change'
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='changes')
+    user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
+    modification_date = models.DateField('Project modification date', auto_now=True)
+    info = models.TextField(blank=True)
 
 
 # -----------------------------------------------------------------------------

@@ -14,7 +14,7 @@ from django.views.generic.list import ListView
 from markdown import markdown
 
 from projects.forms import ProjectForm
-from projects.models import Project, IsNotNull
+from projects.models import Project, IsNotNull, ProjectHistory
 
 
 class AssignmentView(TemplateView):
@@ -63,7 +63,20 @@ class ProjectUpdateView(LoginRequiredMixin, FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        if not any(form.cleaned_data.values()):
+            # There were no changes
+            return super(ProjectUpdateView, self).form_valid(form)
+
+        # There were changes at least 1 value
+        history_data = {'project': self.object, 'user': self.request.user}
+        initial_values, delta_values, resulting_value = {}, {}, {}
         for key, value in form.cleaned_data.items():
+            initial_values[key] = getattr(self.object, key)
+            delta_values[key] = value
+            resulting_value[key] = initial_values[key] + delta_values[key]
             setattr(self.object, key, F(key) + value)
         self.object.save()
+        history_data['info'] = 'initial={}\ndelta={}\nresulting={}'.format(
+            initial_values, delta_values, resulting_value)
+        ProjectHistory.objects.create(**history_data)
         return super(ProjectUpdateView, self).form_valid(form)
