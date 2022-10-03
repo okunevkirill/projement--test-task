@@ -80,7 +80,7 @@ company if there are multiple companies with the same name.
 Please fix it - **make it possible to filter projects by actual companies in the database (company name should still be
 visible in the filter options)**
 
-### 3. Actual hours need to be decimals
+### 3. Actual hours need to be decimals | ☑
 
 Currently all the actual hours (design, development, testing) for the *Project*
 model are in integers, but they need to be decimals.
