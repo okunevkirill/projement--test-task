@@ -2,3 +2,6 @@ venv/
 .idea
 *.pyc
 db.sqlite3
+/tmp/
+/projement/.coverage
+/projement/htmlcov/

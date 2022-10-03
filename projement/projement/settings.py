@@ -135,3 +135,10 @@ STATIC_URL = '/static/'
 # http://django-crispy-forms.readthedocs.io/
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Celery config
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ["pickle", "json", "msgpack", "yaml"]
+CELERY_TASK_IGNORE_RESULT = False
