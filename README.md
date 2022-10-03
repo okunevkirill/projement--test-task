@@ -8,12 +8,12 @@
 Перед **первым** запуском приложения необходимо:
 
 1. Установить зависимости из `requirements.txt`
-   
+
 2. Провести миграции БД
     ```console
     python manage.py migrate
     ```
-2. Создать суперпользователя
+3. Создать суперпользователя
    ```console
    python manage.py createsuperuser
    ```
@@ -24,6 +24,7 @@
    ```console
    docker run -p 6379:6379 --name projement-redis -d redis
    ```
+
 2. Брокер (celery)
    ```console
    source runcelery.sh
@@ -32,10 +33,12 @@
    ```console
    celery -A projement  worker --loglevel=INFO
    ```
+
 3. Потребитель (django приложение)
    ```console
    python manage.py runserver
    ```
+
 _Примечание_ - все команды приведены с учётом того, что рабочей
 директорией является `projement`.
 
