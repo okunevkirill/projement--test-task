@@ -42,6 +42,16 @@
 _Примечание_ - все команды приведены с учётом того, что рабочей
 директорией является `projement`.
 
+## ToDo
+
+1. Перевести проект на более строгую БД (например postgresql).
+2. Произвести обновление django.
+3. Улучшить информативность в шаблоне обновление времён проекта.
+4. Заменить работу с модулем `os` на работу с `pathlib`.
+5. Написать единый скрипт запуска проекта с пробросом констант через окружение.
+6. Добавить в CI/CD при работе с master-веткой.
+7. Упорядочить проекты при выгрузке в файл.
+
 ## Task text
 
 <details>
@@ -183,7 +193,7 @@ You have probably broken some of the tests while implementing the previous chang
 
 **Please fix the tests and write some new ones to prove that everything works.**
 
-### 9. Improve the code (optional)
+### 9. Improve the code (optional)| ☑
 
 You might have had some good ideas how to improve the project - either on the
 architectural side or just the basic back-end implementation and code.
