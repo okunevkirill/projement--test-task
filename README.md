@@ -177,7 +177,7 @@ form (of course you could do it ;)
 
 It can be just a simple button on dashboard and have the same content as the table there.
 
-### 8. Fix and write tests
+### 8. Fix and write tests| ☑
 
 You have probably broken some of the tests while implementing the previous changes.
 
