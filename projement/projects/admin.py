@@ -5,7 +5,7 @@ from projects.models import Company, Project
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'company', 'start_date', 'end_date')
-    list_filter = ('company__name',)
+    list_filter = (('company', admin.RelatedFieldListFilter),)
     ordering = ('-start_date',)
 
     fieldsets = (

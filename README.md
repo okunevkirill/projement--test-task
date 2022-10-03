@@ -70,7 +70,7 @@ Currently the projects on the dashboard are ordered by start date.
 
 **Make the projects ordered by end date (descending) so that the projects that have not ended yet are shown first.**
 
-### 2. Improve the admin for project detail view
+### 2. Improve the admin for project detail view | ☑
 
 Currently in the admin interface it is possible to filter the projects by company
 name not the company instance in the database.
