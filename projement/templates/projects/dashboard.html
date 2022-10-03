@@ -5,7 +5,8 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th width="40%">Project</th>
+                    <th width="30%">Project</th>
+                    <th width="10%">Tags</th>
                     <th width="30%">Company</th>
                     <th width="15%">Estimated</th>
                     <th width="15%">Actual</th>
@@ -24,6 +25,7 @@
                                 {% endif %}
                             {% endspaceless %}
                         </td>
+                        <td>{{ project.all_tags }}</td>
                         <td>{{ project.company.name }}</td>
                         <td>{{ project.total_estimated_hours }}</td>
                         <td>{{ project.total_actual_hours }}</td>

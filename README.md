@@ -122,7 +122,7 @@ to create when needed and the initially implemented logic (including the form) w
 There are no requirements of how you should represent the data that was entered
 before the architectural changes, just make sure that the previously entered data is not lost!
 
-### 6. Add tags to the projects
+### 6. Add tags to the projects | ☑
 
 Tags are model instances that are **shared between projects** and have only
 the title field (max 16 characters). They should be easily editable in the admin.

@@ -55,6 +55,11 @@ class ProjectUpdateView(LoginRequiredMixin, FormView):
         self.object = None
         super().__init__(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        if 'all_tags' not in kwargs:
+            kwargs['all_tags'] = self.object.all_tags
+        return super().get_context_data(**kwargs)
+
     def dispatch(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         self.object = Project.objects.filter(pk=pk).first()

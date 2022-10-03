@@ -18,6 +18,13 @@ class Company(models.Model):
         return self.name
 
 
+class ProjectTag(models.Model):
+    title = models.CharField(max_length=16)
+
+    def __str__(self):
+        return self.title
+
+
 class Project(models.Model):
     company = models.ForeignKey('projects.Company', on_delete=models.PROTECT, related_name='projects')
 
@@ -39,6 +46,7 @@ class Project(models.Model):
     actual_testing = models.DecimalField(
         'Actual testing hours', max_digits=6,
         decimal_places=2, default=0.0, validators=[MinValueValidator(0)])
+    tags = models.ManyToManyField(ProjectTag, through="PresenceOfTags")
 
     def __str__(self):
         return self.title
@@ -61,6 +69,16 @@ class Project(models.Model):
     @property
     def is_over_budget(self):
         return self.total_actual_hours > self.total_estimated_hours
+
+    @property
+    def all_tags(self):
+        return ', '.join(map(str, self.tags.all()))
+
+
+class PresenceOfTags(models.Model):
+    tag = models.ForeignKey(ProjectTag, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    date_created = models.DateField(blank=True, null=True, auto_now_add=True)
 
 
 class ProjectHistory(models.Model):

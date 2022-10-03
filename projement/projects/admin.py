@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from projects.models import Company, Project, ProjectHistory
+from projects.models import Company, Project, ProjectHistory, PresenceOfTags, ProjectTag
+
+
+class PresenceOfTagsInline(admin.TabularInline):
+    model = PresenceOfTags
+    extra = 1
+    fields = ('tag', 'date_created')
+    readonly_fields = ('date_created',)
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -13,6 +20,9 @@ class ProjectAdmin(admin.ModelAdmin):
         ('Estimated hours', {'fields': ['estimated_design', 'estimated_development', 'estimated_testing']}),
         ('Actual hours', {'fields': ['actual_design', 'actual_development', 'actual_testing']}),
     )
+    inlines = [
+        PresenceOfTagsInline,
+    ]
 
     def get_readonly_fields(self, request, obj=None):
         if obj is None:
@@ -29,3 +39,4 @@ class ProjectHistoryAdmin(admin.ModelAdmin):
 admin.site.register(Company)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(ProjectHistory, ProjectHistoryAdmin)
+admin.site.register(ProjectTag)
