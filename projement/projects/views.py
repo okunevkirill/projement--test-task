@@ -2,11 +2,13 @@ import os
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import F
 from django.db.models.functions import Lower
+from django.http import Http404
 from django.urls.base import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from markdown import markdown
@@ -44,7 +46,24 @@ class DashboardView(LoginRequiredMixin, ListView):
         return projects
 
 
-class ProjectUpdateView(LoginRequiredMixin, UpdateView):
-    model = Project
+class ProjectUpdateView(LoginRequiredMixin, FormView):
+    template_name = 'projects/project_form.html'
     form_class = ProjectForm
     success_url = reverse_lazy('dashboard')
+
+    def __init__(self, *args, **kwargs):
+        self.object = None
+        super().__init__(*args, **kwargs)
+
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        self.object = Project.objects.filter(pk=pk).first()
+        if not self.object or self.object.get_absolute_url() != request.path:
+            raise Http404()
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        for key, value in form.cleaned_data.items():
+            setattr(self.object, key, F(key) + value)
+        self.object.save()
+        return super(ProjectUpdateView, self).form_valid(form)

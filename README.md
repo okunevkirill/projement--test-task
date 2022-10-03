@@ -90,7 +90,7 @@ application running.**
 
 All the actual hours should be in the range of `0 <= x < 10000` and have 2 decimal places.
 
-### 4. Incremental changes
+### 4. Incremental changes | ☑
 
 When two people are editing the same project at the same time and want
 to increase the actual development hours by 10, then it results in faulty data.
