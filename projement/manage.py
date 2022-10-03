@@ -4,6 +4,10 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "projement.settings")
+
+    if sys.version_info.major < 3 or sys.version_info.minor > 6:
+        raise ImportError("This project requires Python3.0 <= {ver} <= Python3.6")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
