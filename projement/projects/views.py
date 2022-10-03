@@ -2,6 +2,7 @@ import os
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.functions import Lower
 from django.urls.base import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic.base import TemplateView
@@ -11,7 +12,7 @@ from django.views.generic.list import ListView
 from markdown import markdown
 
 from projects.forms import ProjectForm
-from projects.models import Project
+from projects.models import Project, IsNotNull
 
 
 class AssignmentView(TemplateView):
@@ -32,7 +33,7 @@ class AssignmentView(TemplateView):
 
 class DashboardView(LoginRequiredMixin, ListView):
     model = Project
-    ordering = ('-start_date',)
+    ordering = (IsNotNull('end_date'), '-end_date', Lower('title'))
     context_object_name = 'projects'
     template_name = 'projects/dashboard.html'
 

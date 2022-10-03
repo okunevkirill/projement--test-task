@@ -1,3 +1,5 @@
+from abc import ABCMeta
+
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -5,7 +7,6 @@ from django.utils.text import slugify
 
 
 class Company(models.Model):
-
     class Meta:
         verbose_name_plural = "companies"
 
@@ -16,7 +17,6 @@ class Company(models.Model):
 
 
 class Project(models.Model):
-
     company = models.ForeignKey('projects.Company', on_delete=models.PROTECT, related_name='projects')
 
     title = models.CharField('Project title', max_length=128)
@@ -53,3 +53,10 @@ class Project(models.Model):
     @property
     def is_over_budget(self):
         return self.total_actual_hours > self.total_estimated_hours
+
+
+# -----------------------------------------------------------------------------
+class IsNotNull(models.Func, metaclass=ABCMeta):
+    _output_field = models.BooleanField()
+    arity = 1
+    template = '%(expressions)s IS NOT NULL'

@@ -64,7 +64,7 @@ The application should be visible at `127.0.0.1:8000` after that
 If you have any issues or questions about the task then mark them as TODOs
 in comments and figure out the best solution yourself.
 
-### 1. Fix project ordering on dashboard
+### 1. Fix project ordering on dashboard | ☑
 
 Currently the projects on the dashboard are ordered by start date.
 
