@@ -5,6 +5,40 @@
 
 ## Installing
 
+Перед **первым** запуском приложения необходимо:
+
+1. Установить зависимости из `requirements.txt`
+   
+2. Провести миграции БД
+    ```console
+    python manage.py migrate
+    ```
+2. Создать суперпользователя
+   ```console
+   python manage.py createsuperuser
+   ```
+
+Для корректной работы приложения необходимо запустить несколько служб:
+
+1. Продюсер приложения (сервер Redis)
+   ```console
+   docker run -p 6379:6379 --name projement-redis -d redis
+   ```
+2. Брокер (celery)
+   ```console
+   source runcelery.sh
+   ```
+   **_или_**
+   ```console
+   celery -A projement  worker --loglevel=INFO
+   ```
+3. Потребитель (django приложение)
+   ```console
+   python manage.py runserver
+   ```
+_Примечание_ - все команды приведены с учётом того, что рабочей
+директорией является `projement`.
+
 ## Task text
 
 <details>
@@ -134,7 +168,7 @@ Tags for one specific project should be easily editable in the admin.
 You don't currently have to show the tags on dashboard nor the edit
 form (of course you could do it ;)
 
-### 7. Excel
+### 7. Excel | ☑
 
 **Make it possible to download a simple summary of projects in `.xls` format.**
 

@@ -1,10 +1,14 @@
+import json
 import os
 
+from celery.result import AsyncResult
+from celery.exceptions import OperationalError
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
 from django.db.models.functions import Lower
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.urls.base import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic.base import TemplateView
@@ -15,6 +19,7 @@ from markdown import markdown
 
 from projects.forms import ProjectForm
 from projects.models import Project, IsNotNull, ProjectHistory
+from projects.tasks import export_dashboard_task
 
 
 class AssignmentView(TemplateView):
@@ -85,3 +90,31 @@ class ProjectUpdateView(LoginRequiredMixin, FormView):
             initial_values, delta_values, resulting_value)
         ProjectHistory.objects.create(**history_data)
         return super(ProjectUpdateView, self).form_valid(form)
+
+
+@login_required
+def export_dashboard_file_view(request):
+    if request.method != 'POST':
+        raise Http404
+    try:
+        task = export_dashboard_task.delay()
+    except OperationalError:
+        raise Http404
+
+    return HttpResponse(
+        json.dumps({"task_id": task.id}), content_type='application/json', status=202)
+
+
+@login_required
+def download_file_view(request):
+    celery_result = AsyncResult(request.GET.get("task_id")).get()
+    file_path = celery_result.get('data', {}).get('outfile')
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/ms-excel')
+            outfile = os.path.basename(file_path)
+            response['Content-Disposition'] = 'attachment; filename=%s' % outfile
+
+            os.remove(file_path)
+            return response
+    raise Http404
