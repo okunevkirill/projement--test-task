@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th width="40%">Project</th>
+                    <th width="30%">Company</th>
+                    <th width="15%">Estimated</th>
+                    <th width="15%">Actual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>
+                            {% spaceless %}
+                                {% if project.has_ended %}<s>{% endif %}
+                                <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                                {% if project.has_ended %}</s>{% endif %}
+                                {% if project.is_over_budget %}
+                                    &nbsp;<span class="badge badge-danger"><i class="fas fa-clock"></i></span>
+                                {% endif %}
+                            {% endspaceless %}
+                        </td>
+                        <td>{{ project.company.name }}</td>
+                        <td>{{ project.total_estimated_hours }}</td>
+                        <td>{{ project.total_actual_hours }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
